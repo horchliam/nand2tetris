@@ -74,3 +74,14 @@ repeat 210 {
 set RAM[0] 6,   // restores the arguments in case the program used them
 set RAM[1] 7,
 output;
+
+set PC 0,
+set RAM[0] 22,   // sets test arguments
+set RAM[1] 21,
+set RAM[2] -1;  // tests that product was initialized to 0
+repeat 210 {
+  ticktock;
+}
+set RAM[0] 22,   // restores the arguments in case the program used them
+set RAM[1] 21,
+output;
