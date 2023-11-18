@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -12,13 +14,27 @@ class Parser {
     // Given a file name, initialize the parser
     Parser(string& x);
 
-    bool hasMoreCommands();
+    bool getHasMoreCommands();
 
-    void printHelloFileName();
+    void advance();
+
+    char commandType();
+
+    string symbol();
+
+    string destM();
+
+    string compM();
+
+    string jumpM();
+
+    string getCurrentLine();
 
     private:
-    string filename;
+    bool hasMoreCommands = true;
     ifstream fin;
+    map<char, char> commandTable;
+    string currentCommand;
 };
 
 #endif

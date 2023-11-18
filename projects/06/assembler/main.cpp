@@ -6,9 +6,14 @@ using namespace std;
 int main()
 {
 
-    string testString = "./test.txt";
+    string testString = "../add/Add.asm";
 
     Parser p(testString);
 
-    p.printHelloFileName();
+    while(p.getHasMoreCommands()) {
+        p.advance();
+        cout << p.getCurrentLine() << endl;
+    }
+    
+    return 0;
 }
