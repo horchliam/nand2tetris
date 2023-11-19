@@ -6,13 +6,15 @@ using namespace std;
 int main()
 {
 
-    string testString = "../add/Add.asm";
+    string testString = "../rect/Rect.asm";
 
     Parser p(testString);
 
     while(p.getHasMoreCommands()) {
         p.advance();
-        cout << p.getCurrentLine() << endl;
+        if(!p.jumpM().empty()) {
+            cout << p.jumpM() << endl;
+        }
     }
     
     return 0;

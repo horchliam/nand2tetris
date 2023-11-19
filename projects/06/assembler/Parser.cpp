@@ -47,11 +47,27 @@ void Parser::advance() {
 }
 
 char Parser::commandType() {
-  return 'x';
+  if(commandTable.find(currentCommand[0]) != commandTable.end()) {
+    return commandTable[currentCommand[0]];
+  }
+
+  cout << "Invalid command" << endl;
+  return 'X';
 }
 
 string Parser::symbol() {
-  return "Not yet implemented";
+  if(commandType() == 'A' || commandType() == 'L') {
+    string result = currentCommand;
+
+    result.erase(remove(result.begin(), result.end(), '@'), result.end());
+    result.erase(remove(result.begin(), result.end(), '('), result.end());
+    result.erase(remove(result.begin(), result.end(), ')'), result.end());
+
+    return result;
+  }
+
+  cout << "No symbol in current command" << endl;
+  return "";
 }
 
 string Parser::destM() {
@@ -63,7 +79,14 @@ string Parser::compM() {
 }
 
 string Parser::jumpM() {
-  return "Not yet implemented";
+  signed long semiPos = currentCommand.find(';');
+
+  if(semiPos != string::npos) {
+    return currentCommand.substr(semiPos, currentCommand.length());
+  }
+
+  cout << "No jump command found" << endl; 
+  return "";
 }
 
 string Parser::getCurrentLine() {
