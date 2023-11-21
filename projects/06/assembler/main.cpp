@@ -12,9 +12,7 @@ int main()
 
     while(p.getHasMoreCommands()) {
         p.advance();
-        if(!p.jumpM().empty()) {
-            cout << p.jumpM() << endl;
-        }
+        cout << p.getCurrentLine() << " command type: " << p.commandType() << " comp: " << p.compM() << " dest: " << p.destM() << " symbol: " << p.symbol() << endl;
     }
     
     return 0;

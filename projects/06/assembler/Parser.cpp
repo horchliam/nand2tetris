@@ -71,18 +71,49 @@ string Parser::symbol() {
 }
 
 string Parser::destM() {
-  return "Not yet implemented";
+  if(commandType() != 'C') {
+    cout << "Dest called on non C command" << endl;
+    return "";
+  }
+
+  signed long equalPos = currentCommand.find('=');
+  
+  if(equalPos != string::npos) {
+    return currentCommand.substr(0, equalPos);
+  }
+
+  cout << "No equal sign in C command" << endl;
+  return "";
 }
 
 string Parser::compM() {
-  return "Not yet implemented";
+  if(commandType() != 'C') {
+    cout << "Comp called on non C command" << endl;
+    return "";
+  }
+
+  signed long equalPos = currentCommand.find('=');
+  signed long semiPos = currentCommand.find(';');
+
+  if(equalPos != string::npos) {
+    if(semiPos != string::npos) {
+      return currentCommand.substr(equalPos + 1, semiPos - equalPos - 1);
+    }
+
+    return currentCommand.substr(equalPos + 1, currentCommand.length() - equalPos - 1);
+  } else if(semiPos != string::npos) {
+    return currentCommand.substr(0, semiPos);
+  }
+
+  cout << "Comp syntax was bad" << endl;
+  return "";
 }
 
 string Parser::jumpM() {
   signed long semiPos = currentCommand.find(';');
 
   if(semiPos != string::npos) {
-    return currentCommand.substr(semiPos, currentCommand.length());
+    return currentCommand.substr(semiPos + 1, currentCommand.length() - semiPos - 1);
   }
 
   cout << "No jump command found" << endl; 
