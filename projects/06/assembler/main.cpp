@@ -1,5 +1,5 @@
-// #include <iostream>
 #include "Parser.hpp"
+#include "Code.hpp"
 
 using namespace std;
 
@@ -9,6 +9,8 @@ int main()
     string testString = "../rect/Rect.asm";
 
     Parser p(testString);
+
+    Code c;
 
     while(p.getHasMoreCommands()) {
         p.advance();
