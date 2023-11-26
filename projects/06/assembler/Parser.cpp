@@ -51,7 +51,6 @@ char Parser::commandType() {
     return commandTable[currentCommand[0]];
   }
 
-  cout << "Invalid command" << endl;
   return 'X';
 }
 
@@ -66,7 +65,6 @@ string Parser::symbol() {
     return result;
   }
 
-  cout << "No symbol in current command" << endl;
   return "";
 }
 
@@ -82,7 +80,6 @@ string Parser::destM() {
     return currentCommand.substr(0, equalPos);
   }
 
-  cout << "No equal sign in C command" << endl;
   return "";
 }
 
@@ -105,7 +102,6 @@ string Parser::compM() {
     return currentCommand.substr(0, semiPos);
   }
 
-  cout << "Comp syntax was bad" << endl;
   return "";
 }
 
@@ -116,7 +112,6 @@ string Parser::jumpM() {
     return currentCommand.substr(semiPos + 1, currentCommand.length() - semiPos - 1);
   }
 
-  cout << "No jump command found" << endl; 
   return "";
 }
 

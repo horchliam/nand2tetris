@@ -6,3 +6,5 @@
 *.dat
 *.sh
 myprogram
+test.*
+*.exe
