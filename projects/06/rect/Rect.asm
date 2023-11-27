@@ -6,11 +6,8 @@
 // Draws a rectangle at the top-left corner of the screen.
 // The rectangle is 16 pixels wide and R0 pixels high.
 
-   // If (R0 <= 0) goto END else n = R0
-   @R0
-   D=M
-   @END
-   D;JLE 
+   @30
+   D=A
    @n
    M=D
    // addr = base address of first screen row

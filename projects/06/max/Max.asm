@@ -5,6 +5,16 @@
 
 // Computes R2 = max(R0, R1)  (R0,R1,R2 refer to RAM[0],RAM[1],RAM[2])
 
+   // Set R0 to 1
+   @1
+   D=A
+   @R0
+   M=D
+   // Set R1 to 2
+   @2
+   D=A
+   @R1
+   M=D
    // D = R0 - R1
    @R0
    D=M
@@ -28,3 +38,4 @@
 (END)
    @END
    0;JMP
+   // End result should be 2
