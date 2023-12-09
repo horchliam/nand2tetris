@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
         if (!p.hasMoreCommands()) {
             break;
         }
-        
-        cout << p.getCurrentLine() << endl;
+
+        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << endl;
     }
     
     fout.close();
