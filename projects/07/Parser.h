@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -29,3 +32,4 @@ class Parser {
     bool moreCommands = true;
     map<string, CommandType> commandTable;
 };
+#endif

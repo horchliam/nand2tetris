@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Parser.h"
+#include "CodeWriter.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
             break;
         }
 
-        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << endl;
+        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
     }
     
     fout.close();

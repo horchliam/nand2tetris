@@ -69,6 +69,7 @@ CommandType Parser::currentCommandType() {
     return c_undefined;
 }
 
+// If a second space is not present, this method would not work
 string Parser::getArg1() {
     if(currentCommandType() == c_arithmetic) {
         return currentLine;
@@ -88,14 +89,32 @@ string Parser::getArg1() {
     }
 
     if(firstSpace != 0 && secondSpace != 0) {
-        return currentLine.substr(firstSpace + 1, secondSpace - firstSpace);
+        return currentLine.substr(firstSpace + 1, secondSpace - firstSpace - 1);
     } 
         
     return "NO FIRST ARG FOUND";
 }
 
+//
 string Parser::getArg2() {
-    return "NEED TO IMPLEMENT";
+    int firstSpace = 0, secondSpace = 0;
+
+    for(int i = 0; i < currentLine.length(); i++) {
+        if(currentLine[i] == ' ') {
+            if(firstSpace == 0) {
+                firstSpace = i;
+            } else {
+                secondSpace = i;
+                break;
+            }
+        }
+    }
+
+    if(secondSpace != 0) {
+        return currentLine.substr(secondSpace + 1, currentLine.length() - secondSpace - 1);
+    } 
+        
+    return "NO SECOND ARG FOUND";
 }
 
 string Parser::getCurrentLine() {
