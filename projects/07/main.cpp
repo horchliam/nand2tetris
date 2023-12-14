@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     fout.open(outputFileName);
 
     Parser p(inputFileName);
+    CodeWriter c(fout);
 
     while(true) {
         p.advance();
@@ -27,7 +28,13 @@ int main(int argc, char *argv[]) {
             break;
         }
 
-        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
+        // cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
+
+        if(p.currentCommandType() == c_push || p.currentCommandType() == c_pop) {
+            c.writePushPop(p.currentCommandType(), p.getArg1(), stoi(p.getArg2()));
+        } else if(p.currentCommandType() == c_arithmetic) {
+            c.writeArithmetic(p.getArg1());
+        }
     }
     
     fout.close();
