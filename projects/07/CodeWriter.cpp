@@ -23,20 +23,40 @@ void CodeWriter::writeArithmetic(string command) {
             out << "D=D+M" << endl;
         } else if(command == "sub") {
             out << "D=M-D" << endl;
+        } else if(command == "and") {
+            out << "D=D&M" << endl;
+        } else if(command == "or") {
+            out << "D=D|M" << endl;
         } else if(command == "eq") {
             out << "D=D-M" << endl;
             out << "@eq_" << eqCounter << endl;
-            out << "D;JEQ" << endl; // If D-M == 0 then true, which is 0
-            out << "D=-1" << endl; // False is -1
+            out << "D;JEQ" << endl; // If D-M == 0 then true, which is -1
+            out << "D=0" << endl; 
             out << "@not_eq_" << eqCounter << endl;
             out << "0;JMP" << endl;
             out << "(eq_" << eqCounter << ")" << endl;
-            out << "D=0" << endl;
+            out << "D=-1" << endl;
             out << "(not_eq_" << eqCounter++ << ")" << endl;
         } else if(command == "lt") {
-            git st
+            out << "D=M-D" << endl;
+            out << "@lt_" << ltCounter << endl;
+            out << "D;JLT" << endl;
+            out << "D=0" << endl;
+            out << "@not_lt_" << ltCounter << endl;
+            out << "0;JMP" << endl;
+            out << "(lt_"  << ltCounter << ")" << endl;
+            out << "D=-1" << endl;
+            out << "(not_lt_" << ltCounter++ << ")" << endl;
         } else if(command == "gt") {
-
+            out << "D=M-D" << endl;
+            out << "@gt_" << gtCounter << endl;
+            out << "D;JGT" << endl;
+            out << "D=0" << endl;
+            out << "@not_gt_" << gtCounter << endl;
+            out << "0;JMP" << endl;
+            out << "(gt_"  << gtCounter << ")" << endl;
+            out << "D=-1" << endl;
+            out << "(not_gt_" << gtCounter++ << ")" << endl;
         }
     }
 
