@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "Parser.h"
 #include "CodeWriter.h"
@@ -21,14 +22,19 @@ int main(int argc, char *argv[]) {
     Parser p(inputFileName);
     CodeWriter c(fout);
 
+    stringstream test(inputFileName);
+    string segment;
+
+    while(getline(test, segment, '\\')) {}
+
+    c.setFileName(segment.substr(0, segment.length() - 3));
+
     while(true) {
         p.advance();
 
         if (!p.hasMoreCommands()) {
             break;
         }
-
-        // cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
 
         if(p.currentCommandType() == c_push || p.currentCommandType() == c_pop) {
             c.writePushPop(p.currentCommandType(), p.getArg1(), stoi(p.getArg2()));

@@ -70,14 +70,63 @@ void CodeWriter::writeArithmetic(string command) {
 
 void CodeWriter::writePushPop(CommandType command, string segment, int index) {
     if (command == c_push) {
-        out << "@" << index << endl;
-        out << "D=A" << endl;
-        out << segments[segment] << endl;
+        if(segment == "static") {
+            out << "@" << curFileName << "." << index << endl;
+            out << "D=M" << endl;
+        } else {
+            out << "@" << index << endl;
+            out << "D=A" << endl;
+
+            if(segment != "constant") {
+                if(segment == "pointer") {
+                    out << "@" << 3 << endl;
+                    out << "A=A+D" << endl;
+                    out << "D=M" << endl;
+                } else if(segment == "temp") {
+                    out << "@" << 5 << endl;
+                    out << "A=A+D" << endl;
+                    out << "D=M" << endl;
+                } else {
+                    out << segments[segment] << endl;
+                    out << "A=D+M"  << endl;
+                    out << "D=M" << endl;
+                }
+            }
+        }
+
+        // Load D onto top of stack
+        out << "@SP" << endl;
         out << "A=M" << endl;
         out << "M=D" << endl;
-        out << segments[segment] << endl;
+        out << "@SP" << endl;
         out << "M=M+1" << endl; // Iterate the given pointer to the top
     } else if (command == c_pop) {
-        
+        if(segment == "pointer") {
+            out << "@" << index << endl;
+            out << "D=A" << endl;
+            out << "@" << 3 << endl;
+            out << "D=D+A" << endl;
+        } else if(segment == "temp") {
+            out << "@" << index << endl;
+            out << "D=A" << endl;
+            out << "@" << 5 << endl;
+            out << "D=D+A" << endl;
+        } else if(segment == "static") {
+            out << "@" << curFileName << "." << index << endl;
+            out << "D=A" << endl;    
+        } else {
+            out << segments[segment] << endl;
+            out << "D=M" << endl;
+            out << "@" << index << endl;
+            out << "D=D+A" << endl;
+        }
+        out << "@R13" << endl;
+        out << "M=D" << endl; // Temporarily store desired adress in R13
+        out << "@SP" << endl;
+        out << "AM=M-1" << endl; // Decrement and store stack pointer
+        out << "D=M" << endl; // Store top of stack in D
+        out << "@R13" << endl;
+        out << "A=M" << endl;
+        out << "M=D" << endl; // Store D into desired location
     }
 }

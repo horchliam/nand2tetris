@@ -11,13 +11,16 @@ using namespace std;
 class CodeWriter {
     public:
     CodeWriter(ostream& out) : out(out) { 
-        segments["constant"] = "@SP";
+        segments["local"] = "@LCL";
+        segments["argument"] = "@ARG";
+        segments["this"] = "@THIS";
+        segments["that"] = "@THAT";
 
         eqCounter = 0;
         ltCounter = 0;
         gtCounter = 0;
     };
-    void setFileName(string& in) { this->curFileName = in; };
+    void setFileName(string in) { this->curFileName = in; };
     void writeArithmetic(string command);
     void writePushPop(CommandType command, string segment, int index);
     void saySomething() { out << "Hi fella!"; };
