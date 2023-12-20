@@ -23,6 +23,8 @@ class CodeWriter {
     void setFileName(string in) { this->curFileName = in; };
     void writeArithmetic(string command);
     void writePushPop(CommandType command, string segment, int index);
+    void writeLabel(string label);
+    void writeIf(string label);
     void saySomething() { out << "Hi fella!"; };
     private:
     ostream& out;

@@ -130,3 +130,15 @@ void CodeWriter::writePushPop(CommandType command, string segment, int index) {
         out << "M=D" << endl; // Store D into desired location
     }
 }
+
+void CodeWriter::writeLabel(string label) {
+    out << "(" << curFileName << "$" << label << ")" << endl;
+}
+
+void CodeWriter::writeIf(string label) {
+    out << "@SP" << endl;
+    out << "AM=M-1" << endl; // Decrease SP and pop top of stack
+    out << "D=M" << endl; // Store top of stack
+    out << "@" << curFileName << "$" << label << endl;
+    out << "D;JNE" << endl; // Jump if not 0
+}

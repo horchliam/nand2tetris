@@ -71,7 +71,6 @@ CommandType Parser::currentCommandType() {
     return c_undefined;
 }
 
-// If a second space is not present, this method would not work
 string Parser::getArg1() {
     if(currentCommandType() == c_arithmetic) {
         return currentLine;
@@ -92,7 +91,9 @@ string Parser::getArg1() {
 
     if(firstSpace != 0 && secondSpace != 0) {
         return currentLine.substr(firstSpace + 1, secondSpace - firstSpace - 1);
-    } 
+    } else if(firstSpace != 0) {
+        return currentLine.substr(firstSpace + 1, currentLine.length() - firstSpace - 1);
+    }
         
     return "NO FIRST ARG FOUND";
 }

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     while(true) {
         p.advance();
 
-        // cout << p.getCurrentLine() << "\t\t" << p.currentCommandType() << endl;
+        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << endl;
 
         if (!p.hasMoreCommands()) {
             break;
@@ -42,6 +42,10 @@ int main(int argc, char *argv[]) {
             c.writePushPop(p.currentCommandType(), p.getArg1(), stoi(p.getArg2()));
         } else if(p.currentCommandType() == c_arithmetic) {
             c.writeArithmetic(p.getArg1());
+        } else if(p.currentCommandType() == c_if) {
+            c.writeIf(p.getArg1());
+        } else if(p.currentCommandType() == c_label) {
+            c.writeLabel(p.getArg1());
         }
     }
     
