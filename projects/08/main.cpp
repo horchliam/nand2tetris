@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
             c.writeIf(p.getArg1());
         } else if(p.currentCommandType() == c_label) {
             c.writeLabel(p.getArg1());
+        } else if(p.currentCommandType() == c_goto) {
+            c.writeGoto(p.getArg1());
         }
     }
     

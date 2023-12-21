@@ -1,6 +1,7 @@
 #include "CodeWriter.h"
 
 void CodeWriter::writeArithmetic(string command) {
+    cout << command.length() << endl;
     // Load the top of the stack into D register
     out << "@SP" << endl;
     out << "M=M-1" << endl;
@@ -22,6 +23,7 @@ void CodeWriter::writeArithmetic(string command) {
         if(command == "add") {
             out << "D=D+M" << endl;
         } else if(command == "sub") {
+            cout << "SUBBING" << endl;
             out << "D=M-D" << endl;
         } else if(command == "and") {
             out << "D=D&M" << endl;
@@ -141,4 +143,9 @@ void CodeWriter::writeIf(string label) {
     out << "D=M" << endl; // Store top of stack
     out << "@" << curFileName << "$" << label << endl;
     out << "D;JNE" << endl; // Jump if not 0
+}
+
+void CodeWriter::writeGoto(string label) {
+    out << "@" << curFileName << "$" << label << endl;
+    out << "0;JMP" << endl;
 }

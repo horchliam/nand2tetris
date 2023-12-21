@@ -73,7 +73,10 @@ CommandType Parser::currentCommandType() {
 
 string Parser::getArg1() {
     if(currentCommandType() == c_arithmetic) {
-        return currentLine;
+        string toReturn = currentLine;
+        // Remove white space, this can be an issue if a comment was on the line
+        toReturn.erase(remove(toReturn.begin(), toReturn.end(), ' '), toReturn.end());
+        return toReturn;
     }
 
     int firstSpace = 0, secondSpace = 0;
@@ -113,6 +116,8 @@ string Parser::getArg2() {
     }
 
     if(secondSpace != 0) {
+        // This can return a bunch of white space with the second argument if there was a comment on the same line. However this isn't an issue since the string
+        // Just gets converted to an int anyway
         return currentLine.substr(secondSpace + 1, currentLine.length() - secondSpace - 1);
     } 
         
