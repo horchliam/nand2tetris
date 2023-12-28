@@ -149,3 +149,81 @@ void CodeWriter::writeGoto(string label) {
     out << "@" << curFileName << "$" << label << endl;
     out << "0;JMP" << endl;
 }
+
+void CodeWriter::writeFuntion(string functionName, int locals) {
+    out << "(" << functionName << ")" << endl;
+    out << "@0" << endl;
+    out << "D=A" << endl; // For initializing local variables
+
+    for(int i = 0; i < locals; i++) {
+        out << "@SP" << endl;
+        out << "A=M" << endl;
+        out << "M=D" << endl; // Where SP points set to 0
+        out << "@SP" << endl;
+        out << "M=M+1" << endl; // Increment SP
+    }
+}
+
+void CodeWriter::writeReturn() {
+    out << "@LCL" << endl;
+    out << "D=M" << endl;
+    out << "@R13" << endl;
+    out << "M=D" << endl; // Store the beginning address of the frame in R13
+
+    out << "@5" << endl;
+    out << "D=D-A" << endl;
+    out << "@R14" << endl;
+    out << "M=D" << endl; // Store the return address in R14
+
+    out << "@SP" << endl;
+    out << "A=M-1" << endl;
+    out << "D=M" << endl; // Store return value in D, function should've pushed return value to top of stack
+
+    out << "@ARG" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // Place return value at where ARG points
+
+    out << "D=A+1" << endl; // ARG's value still in A, store in D, plus one to account for return value being pushed
+    out << "@SP" << endl;
+    out << "M=D" << endl; // SP = ARG + 1
+
+    out << "@1" << endl;
+    out << "D=A" << endl;
+    out << "@R13" << endl;
+    out << "A=M" << endl;
+    out << "A=A-D" << endl;
+    out << "D=M" << endl;
+    out << "@THAT" << endl;
+    out << "M=D" << endl; // Change THAT address to FRAME - 1
+
+    out << "@2" << endl;
+    out << "D=A" << endl;
+    out << "@R13" << endl;
+    out << "A=M" << endl;
+    out << "A=A-D" << endl;
+    out << "D=M" << endl;
+    out << "@THIS" << endl;
+    out << "M=D" << endl; // Change THIS address to FRAME - 2
+
+    out << "@3" << endl;
+    out << "D=A" << endl;
+    out << "@R13" << endl;
+    out << "A=M" << endl;
+    out << "A=A-D" << endl;
+    out << "D=M" << endl;
+    out << "@ARG" << endl;
+    out << "M=D" << endl; // Change ARG address to FRAME - 3
+
+    out << "@4" << endl;
+    out << "D=A" << endl;
+    out << "@R13" << endl;
+    out << "A=M" << endl;
+    out << "A=A-D" << endl;
+    out << "D=M" << endl;
+    out << "@LCL" << endl;
+    out << "M=D" << endl; // Change LCL address to FRAME - 4
+
+    out << "@R14" << endl;
+    out << "A=M" << endl;
+    out << "0;JMP" << endl; // Jump to return address
+}

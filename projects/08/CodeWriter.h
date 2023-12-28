@@ -26,6 +26,8 @@ class CodeWriter {
     void writeLabel(string label);
     void writeIf(string label);
     void writeGoto(string label);
+    void writeFuntion(string functionName, int locals);
+    void writeReturn();
     void saySomething() { out << "Hi fella!"; };
     private:
     ostream& out;

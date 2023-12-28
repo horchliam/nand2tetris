@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     while(true) {
         p.advance();
 
-        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << endl;
+        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
 
         if (!p.hasMoreCommands()) {
             break;
@@ -48,6 +48,12 @@ int main(int argc, char *argv[]) {
             c.writeLabel(p.getArg1());
         } else if(p.currentCommandType() == c_goto) {
             c.writeGoto(p.getArg1());
+        } else if(p.currentCommandType() == c_function) {
+            c.writeFuntion(p.getArg1(), stoi(p.getArg2()));
+        } else if(p.currentCommandType() == c_return) {
+            c.writeReturn();
+        } else if(p.currentCommandType() == c_call) {
+            
         }
     }
     
