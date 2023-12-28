@@ -19,6 +19,7 @@ class CodeWriter {
         eqCounter = 0;
         ltCounter = 0;
         gtCounter = 0;
+        returnCounter = 0;
     };
     void setFileName(string in) { this->curFileName = in; };
     void writeArithmetic(string command);
@@ -28,11 +29,13 @@ class CodeWriter {
     void writeGoto(string label);
     void writeFuntion(string functionName, int locals);
     void writeReturn();
+    void writeCall(string functionName, int locals);
+    void writeInit();
     void saySomething() { out << "Hi fella!"; };
     private:
     ostream& out;
     string curFileName;
     map<string, string> segments;
-    int eqCounter, ltCounter, gtCounter;
+    int eqCounter, ltCounter, gtCounter, returnCounter;
 };
 #endif

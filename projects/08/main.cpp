@@ -10,50 +10,58 @@ int main(int argc, char *argv[]) {
     string inputFileName, outputFileName;
     ofstream fout;
 
-    if (argc < 1) {
-        cout << "Please provide an input file name!" << endl;
-    } else {
-        inputFileName = argv[1];
-        outputFileName = inputFileName.substr(0, inputFileName.length() - 2) + "asm";
+    if (argc < 2) {
+        cout << "Please provide an input file name and output file name at least!" << endl;
+        return -1;
     }
+
+    outputFileName = argv[1];
 
     fout.open(outputFileName);
 
-    Parser p(inputFileName);
+    cout << outputFileName << endl;
+
     CodeWriter c(fout);
+    c.writeInit();
 
-    stringstream test(inputFileName);
-    string segment;
+    for(int i = 2; i < argc ; i++) {
+        inputFileName = argv[i];
 
-    while(getline(test, segment, '\\')) {}
+        Parser p(inputFileName);
 
-    c.setFileName(segment.substr(0, segment.length() - 3));
+        stringstream test(inputFileName);
+        string segment;
 
-    while(true) {
-        p.advance();
+        while(getline(test, segment, '\\')) {}
 
-        cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
+        c.setFileName(segment.substr(0, segment.length() - 3));
 
-        if (!p.hasMoreCommands()) {
-            break;
-        }
+        while(true) {
+            p.advance();
 
-        if(p.currentCommandType() == c_push || p.currentCommandType() == c_pop) {
-            c.writePushPop(p.currentCommandType(), p.getArg1(), stoi(p.getArg2()));
-        } else if(p.currentCommandType() == c_arithmetic) {
-            c.writeArithmetic(p.getArg1());
-        } else if(p.currentCommandType() == c_if) {
-            c.writeIf(p.getArg1());
-        } else if(p.currentCommandType() == c_label) {
-            c.writeLabel(p.getArg1());
-        } else if(p.currentCommandType() == c_goto) {
-            c.writeGoto(p.getArg1());
-        } else if(p.currentCommandType() == c_function) {
-            c.writeFuntion(p.getArg1(), stoi(p.getArg2()));
-        } else if(p.currentCommandType() == c_return) {
-            c.writeReturn();
-        } else if(p.currentCommandType() == c_call) {
-            
+            // cout << p.getCurrentLine() << "\t\t" << p.getArg1() << "\t\t" << p.getArg2() << endl;
+
+            if (!p.hasMoreCommands()) {
+                break;
+            }
+
+            if(p.currentCommandType() == c_push || p.currentCommandType() == c_pop) {
+                c.writePushPop(p.currentCommandType(), p.getArg1(), stoi(p.getArg2()));
+            } else if(p.currentCommandType() == c_arithmetic) {
+                c.writeArithmetic(p.getArg1());
+            } else if(p.currentCommandType() == c_if) {
+                c.writeIf(p.getArg1());
+            } else if(p.currentCommandType() == c_label) {
+                c.writeLabel(p.getArg1());
+            } else if(p.currentCommandType() == c_goto) {
+                c.writeGoto(p.getArg1());
+            } else if(p.currentCommandType() == c_function) {
+                c.writeFuntion(p.getArg1(), stoi(p.getArg2()));
+            } else if(p.currentCommandType() == c_return) {
+                c.writeReturn();
+            } else if(p.currentCommandType() == c_call) {
+                c.writeCall(p.getArg1(), stoi(p.getArg2()));
+            }
         }
     }
     

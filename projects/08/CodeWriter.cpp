@@ -172,6 +172,8 @@ void CodeWriter::writeReturn() {
 
     out << "@5" << endl;
     out << "D=D-A" << endl;
+    out << "A=D" << endl;
+    out << "D=M" << endl;
     out << "@R14" << endl;
     out << "M=D" << endl; // Store the return address in R14
 
@@ -226,4 +228,77 @@ void CodeWriter::writeReturn() {
     out << "@R14" << endl;
     out << "A=M" << endl;
     out << "0;JMP" << endl; // Jump to return address
+}
+
+void CodeWriter::writeCall(string functionName, int locals) {
+    out << "@return" << returnCounter << endl;
+    out << "D=A" << endl;
+    out << "@SP" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // place return address at top of stack
+    out << "@SP" << endl;
+    out << "M=M+1" << endl; // incrememnt stack pointer
+
+    map<string, string>::iterator it;
+
+    out << "@LCL" << endl;
+    out << "D=M" << endl;
+    out << "@SP" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // place LCL at top of stack
+    out << "@SP" << endl;
+    out << "M=M+1" << endl; // incrememnt stack pointer
+
+    out << "@ARG" << endl;
+    out << "D=M" << endl;
+    out << "@SP" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // place ARG at top of stack
+    out << "@SP" << endl;
+    out << "M=M+1" << endl; // incrememnt stack pointer
+
+    out << "@THIS" << endl;
+    out << "D=M" << endl;
+    out << "@SP" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // place THIS at top of stack
+    out << "@SP" << endl;
+    out << "M=M+1" << endl; // incrememnt stack pointer
+
+    out << "@THAT" << endl;
+    out << "D=M" << endl;
+    out << "@SP" << endl;
+    out << "A=M" << endl;
+    out << "M=D" << endl; // place THAT at top of stack
+    out << "@SP" << endl;
+    out << "M=M+1" << endl; // incrememnt stack pointer
+
+    out << "@SP" << endl;
+    out << "D=M" << endl;
+    out << "@" << locals << endl;
+    out << "D=D-A" << endl;
+    out << "@5" << endl;
+    out << "D=D-A" << endl; // D = SP - n - 5
+    out << "@ARG" << endl;
+    out << "M=D" << endl; // ARG = D
+
+    out << "@SP" << endl;
+    out << "D=M" << endl;
+    out << "@LCL" << endl;
+    out << "M=D" << endl; // LCL = SP
+
+    out << "@" << functionName << endl;
+    out << "0;JMP" << endl; // goto function
+
+    out << "(return" << returnCounter << ")" << endl; // Unique return address
+    returnCounter++;
+}
+
+void CodeWriter::writeInit() {
+    out << "@256" << endl;
+    out << "D=A" << endl;
+    out << "@SP" << endl;
+    out << "M=D" << endl; // SP = 256
+
+    writeCall("Sys.init", 0);
 }
