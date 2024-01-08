@@ -19,8 +19,6 @@ int main(int argc, char *argv[]) {
 
     fout.open(outputFileName);
 
-    cout << outputFileName << endl;
-
     CodeWriter c(fout);
     c.writeInit();
 
